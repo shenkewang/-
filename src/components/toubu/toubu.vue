@@ -1,5 +1,10 @@
 <template>
-    <div class="toubu">头部</div>
+    <div class="toubu">
+        <div class="toubushang">
+            
+        </div>
+        <div class="toubuxia"></div>
+    </div>
 </template>
 <script>
 export default {
@@ -8,7 +13,8 @@ export default {
 </script>
 <style lang="scss" scoped>
     .toubu{
-        font-size:20px;
-    }
+        width:100%;
+        background-color: rgba(7,17,27,.5)
 
+    }
 </style>

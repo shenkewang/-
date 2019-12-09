@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Toubu></Toubu>
+    <Toubu :seller="seller"></Toubu>
     <div class="tab border-1px">
       <div class="tab-item">
         <router-link to="/shangpin">商品</router-link>
@@ -17,7 +17,17 @@
 </template>
 <script>
 import Toubu from "@/components/toubu/toubu.vue";
+import getData from '@/qingqiushuju/toubushuju.js';
+
 export default {
+  data(){
+    return {
+      seller:{}
+    }
+  },
+  async created () {
+    let data= await getData('/qingqiushuju/toubushuju')
+  },
   components: {
     Toubu
   }
