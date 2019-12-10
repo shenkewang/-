@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Toubu :seller="seller"></Toubu>
+    <Toubu :seller="seller"/>
     <div class="tab border-1px">
       <div class="tab-item">
         <router-link to="/shangpin">商品</router-link>
@@ -12,13 +12,13 @@
         <router-link to="/shangjia">商家</router-link>
       </div>
     </div>
-    <router-view></router-view>
+    <router-view/>
   </div>
 </template>
+
 <script>
 import Toubu from "@/components/toubu/toubu.vue";
-import getData from '@/qingqiushuju/toubushuju.js';
-
+import axios from "axios"
 export default {
   data(){
     return {
@@ -26,7 +26,8 @@ export default {
     }
   },
   async created () {
-    let data= await getData('/qingqiushuju/toubushuju')
+    let { data }=await axios.get('/api/seller');
+      console.log(data)
   },
   components: {
     Toubu

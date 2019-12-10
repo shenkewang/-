@@ -3,7 +3,9 @@
         <div class="toubushang">
             
         </div>
-        <div class="toubuxia"></div>
+        <div class="toubuxia">
+
+        </div>
     </div>
 </template>
 <script>
@@ -15,6 +17,5 @@ export default {
     .toubu{
         width:100%;
         background-color: rgba(7,17,27,.5)
-
     }
 </style>
