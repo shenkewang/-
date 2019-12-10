@@ -1,14 +1,13 @@
 
 import axios from 'axios';
-
-export default function(url){
-    return axios.get(url).then(data=>{
-        if(data.errno===0){
-            return data;
-        }
-    }).catch(err=>{
-        console.log(err);
-    })
+export default async function(url){
+    let res =await axios.get(url);
+    const{errnno,data}=res.data;
+    if(errnno===0){
+        return data;
+    }else{
+        console.log('有错');
+    }
 }
  
 

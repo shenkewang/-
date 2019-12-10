@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Toubu from "@/components/toubu/toubu";
+import Toubu from "@/components/toubu/toubu"
 import getData from "@/qingqiushuju/toubushuju.js";
 export default {
   data(){
@@ -26,12 +26,10 @@ export default {
     }
   },
   async created () {
-    let data = await  getData('/api/seller');
-    console.log(data);
+      this.seller=await getData('/api/seller');
   },
   components: {
     Toubu
-
   }
 };
 </script>
