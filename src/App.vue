@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import Toubu from "@/components/toubu/toubu.vue";
-import axios from "axios"
+import Toubu from "@/components/toubu/toubu";
+import getData from "@/qingqiushuju/toubushuju.js";
 export default {
   data(){
     return {
@@ -26,11 +26,12 @@ export default {
     }
   },
   async created () {
-    let { data }=await axios.get('/api/seller');
-      console.log(data)
+    let data = await  getData('/api/seller');
+    console.log(data);
   },
   components: {
     Toubu
+
   }
 };
 </script>
