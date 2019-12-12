@@ -48,7 +48,7 @@ a {
   @include border-1px(rgba(7, 17, 27, 0.1));
   height: 0.4rem;
   line-height: 0.4rem;
-  overflow: hidden;
+  
   .tab-item {
     flex: 1;
     font-size: 0.14rem;
