@@ -5,7 +5,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from '@/luyou/luyou.js';
 
-import "./gongyong/index.scss";
+import "./gongyong/sass/index.scss";
 
 
 Vue.config.productionTip = false

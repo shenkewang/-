@@ -42,7 +42,7 @@ a {
   color: #000;
   text-decoration: none;
 }
-@import "./gongyong/mixin.scss";
+@import "./gongyong/sass/mixin";
 .tab {
   display: flex;
   @include border-1px(rgba(7, 17, 27, 0.1));
