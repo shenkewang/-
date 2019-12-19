@@ -5,7 +5,14 @@ html{
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
-
+.qingchufudong:before,
+.qingchufudong:after{
+    display:table;
+    content:" ";
+}
+.qingchufudong:after{
+    clear:both;
+}
 @media(-webkit-min-device-pixel-ratio:1.5),(min-device-pixel-ratio:1.5){
    .border-1px{
        &::after{
