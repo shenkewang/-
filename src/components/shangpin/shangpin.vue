@@ -1,8 +1,15 @@
 <template>
   <div class="shangpins">
+    <!-- {{currentIndex}} -->
     <div class="zuos" ref="zuogundong">
       <ul class="daohangs">
-        <li class="daohang" v-for="(item,index) in shuju" :key="index">
+        <li
+          class="daohang"
+          :class="{active:currentIndex===index}"
+          v-for="(item,index) in shuju"
+          :key="index"
+          @click="fu()"
+        >
           <span class="text border-1px">
             <span class="daohang-tubiao" v-if="item.type>0" :class="classMap[item.type]"></span>
             {{item.name}}
@@ -12,7 +19,7 @@
     </div>
     <div class="yous" ref="yougundong">
       <ul class="you">
-        <li class="you-item" v-for="(items,index) in shuju" :key="index">
+        <li class="you-item" v-for="(items,index) in shuju" :key="index" ref="youItem">
           <h1 class="you-item-text">{{items.name}}</h1>
           <ul class="you-item-items" v-for="(itemx,inx) in items.foods" :key="inx">
             <li class="you-item-item border-1px">
@@ -44,18 +51,55 @@ import Bscroll from "@better-scroll/core";
 export default {
   data() {
     return {
-      shuju: []
+      shuju: [],
+      listHeight: [], //用于存储每一段（you-item）的高度
+      gaodu: 0
     };
+  },
+  computed: {
+    currentIndex() {
+      //计算index
+      for (let i = 0; i < this.listHeight.length; i++) {
+        let height1 = this.listHeight[i];
+        let height2 = this.listHeight[i + 1];
+        if (!height2 || (this.gaodu >= height1 && this.gaodu < height2)) {
+          return i; //就是要找的index
+        }
+      }
+    }
   },
   async created() {
     this.classMap = ["decrease", "discount", "guarantee", "invoice", "special"];
     this.shuju = await shangpin("/api/goods");
+    await this.$nextTick();
     this.initScroll();
+    this.computedHeight();
   },
-  methods:{
-    initScroll(){
-      this.zuoScroll=new Bscroll(this.$refs.zuogundong);
-      this.youScroll=new Bscroll(this.$refs.yougundong);
+  methods: {
+    initScroll() {
+      this.zuoScroll = new Bscroll(this.$refs.zuogundong, {});
+      this.youScroll = new Bscroll(this.$refs.yougundong, {
+        probeType: 3 //实时监听scroll,包括触底反弹的动画
+      });
+      //监听滚动事件
+      this.youScroll.on("scroll", pos => {
+        this.gaodu = Math.abs(pos.y);
+      });
+    },
+    computedHeight() {
+      //统计每一段的高度
+      let youItem = this.$refs.youItem;
+      console.log(youItem);
+      let height = 0;
+      this.listHeight.push(height);
+      youItem.forEach(ietm => {
+        height += ietm.clientHeight;
+        this.listHeight.push(height);
+      });
+      console.log(this.listHeight);
+    },
+    fu(){
+      alert(1)
     }
   }
 };
@@ -73,15 +117,23 @@ export default {
     flex: 0 0 0.8rem;
     width: 0.8rem;
     .daohangs {
-      &:last-child {
-        @include border-none;
-      }
       .daohang {
         display: table;
         padding: 0 0.12rem;
         width: 100%;
         height: 0.54rem;
         background-color: #f3f5f7;
+        &.active {
+          .daohang {
+            background: #fff;
+            font-weight: 700;
+          }
+        }
+        &:last-child {
+          .text {
+            @include border-none();
+          }
+        }
       }
       .text {
         display: table-cell;
@@ -131,57 +183,58 @@ export default {
     }
     .you-item-items {
       &:last-child {
-        @include border-none;
+        .you-item-item {
+          @include border-none();
+        }
       }
-      .you-item-item {
-        margin: 0.18rem;
-        display: flex;
-        @include border-1px(rgba(7, 17, 27, 0.1));
-
-        .tupian {
-          width: 0.6rem;
-          height: 0.6rem;
-          margin-right: 0.1rem;
-          img {
-            vertical-align: top;
+    }
+    .you-item-item {
+      display: flex;
+      margin: 0.18rem;
+      padding-bottom: 0.1rem;
+      @include border-1px(rgba(7, 17, 27, 0.1));
+      .tupian {
+        width: 0.6rem;
+        height: 0.6rem;
+        margin-right: 0.1rem;
+        img {
+          vertical-align: top;
+        }
+      }
+      .text {
+        margin-top: 0.02rem;
+        .biaoti {
+          font-size: 0.14rem;
+          color: rgb(113, 129, 145);
+          line-height: 0.14rem;
+        }
+        .miaoshu {
+          font-size: 0.1rem;
+          color: rgb(143, 157, 159);
+          line-height: 0.16rem;
+          margin: 0.08rem 0;
+        }
+        .yueshous {
+          font-size: 0.1rem;
+          color: rgb(143, 157, 159);
+          line-height: 0.1rem;
+          .yueshou {
+            margin-right: 0.14rem;
           }
         }
-        .text {
-          margin-top: 0.02rem;
-          .biaoti {
-            font-size: 0.14rem;
-            color: rgb(7, 17, 27);
-            line-height: 0.14rem;
+        .jiage {
+          line-height: 0.24rem;
+          font-weight: 700;
+          font-size: 0.2rem;
+          .xianjia {
+            font-size: 0.14em;
+            color: rgb(240, 20, 20);
           }
-          .miaoshu {
+          .yuanjia {
+            margin-left: 0.08rem;
             font-size: 0.1rem;
             color: rgb(143, 157, 159);
-            line-height: 0.1rem;
-            margin: 0.08rem 0;
-          }
-          .yueshous {
-            font-size: 0.1rem;
-            color: rgb(143, 157, 159);
-            line-height: 0.1rem;
-            .yueshou {
-              margin-right: 0.14rem;
-            }
-          }
-          .jiage {
-            line-height: 0.24rem;
-            font-weight: 700;
-            font-size: 0.2rem;
-            margin-bottom: 0.16rem;
-            .xianjia {
-              font-size: 0.14em;
-              color: rgb(240, 20, 20);
-            }
-            .yuanjia {
-              margin-left: 0.08rem;
-              font-size: 0.1rem;
-              color: rgb(143, 157, 159);
-              text-decoration: line-through;
-            }
+            text-decoration: line-through;
           }
         }
       }
