@@ -8,7 +8,7 @@
           :class="{active:currentIndex===index}"
           v-for="(item,index) in shuju"
           :key="index"
-          @click="fu()"
+          @click="xuanshangpin(index)"
         >
           <span class="text border-1px">
             <span class="daohang-tubiao" v-if="item.type>0" :class="classMap[item.type]"></span>
@@ -43,11 +43,13 @@
         </li>
       </ul>
     </div>
+    <gouwuche></gouwuche>
   </div>
 </template>
 <script>
 import shangpin from "@/qingqiushuju/toubushuju.js";
 import Bscroll from "@better-scroll/core";
+import gouwuche from "@/components/gouwuche/gouwuche.vue"
 export default {
   data() {
     return {
@@ -63,7 +65,7 @@ export default {
         let height1 = this.listHeight[i];
         let height2 = this.listHeight[i + 1];
         if (!height2 || (this.gaodu >= height1 && this.gaodu < height2)) {
-          return i; //就是要找的index
+          return i; //i就是要找的index
         }
       }
     }
@@ -77,30 +79,45 @@ export default {
   },
   methods: {
     initScroll() {
-      this.zuoScroll = new Bscroll(this.$refs.zuogundong, {});
+      this.zuoScroll = new Bscroll(this.$refs.zuogundong, {
+        click:true//让click事件生效
+      });
       this.youScroll = new Bscroll(this.$refs.yougundong, {
-        probeType: 3 //实时监听scroll,包括触底反弹的动画
+        probeType: 3 ,//实时监听scroll,包括触底反弹的动画
+        click:true
       });
       //监听滚动事件
       this.youScroll.on("scroll", pos => {
         this.gaodu = Math.abs(pos.y);
+        if(this.gaodu>=this.listHeight[this.listHeight.length-2]){
+            this.zuoScroll.scrollTo(0,-54);
+            console.log(this.listHeight[this.listHeight.length-2])
+        }
+        if(this.gaodu<=300){
+          this.zuoScroll.scrollTo(0,0);
+        }
       });
     },
     computedHeight() {
       //统计每一段的高度
       let youItem = this.$refs.youItem;
-      console.log(youItem);
+       //console.log(youItem);
       let height = 0;
       this.listHeight.push(height);
       youItem.forEach(ietm => {
         height += ietm.clientHeight;
         this.listHeight.push(height);
       });
-      console.log(this.listHeight);
+       console.log(this.listHeight);
     },
-    fu(){
-      alert(1)
+    xuanshangpin(index){
+      let youItems=this.$refs.youItem;
+      let youItem=youItems[index];
+      this.youScroll.scrollToElement(youItem,500);
     }
+  },
+  components:{
+    gouwuche
   }
 };
 </script>
@@ -124,10 +141,10 @@ export default {
         height: 0.54rem;
         background-color: #f3f5f7;
         &.active {
-          .daohang {
             background: #fff;
-            font-weight: 700;
-          }
+            .text{
+              font-weight: 700;
+            }
         }
         &:last-child {
           .text {
