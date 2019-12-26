@@ -43,7 +43,7 @@
         </li>
       </ul>
     </div>
-    <gouwuche></gouwuche>
+    <gouwuche v-if="selle.deliveryPrice" :deliveryPrice="selle.deliveryPrice" :minPrice="seller.minPrice"></gouwuche>
   </div>
 </template>
 <script>
@@ -51,6 +51,11 @@ import shangpin from "@/qingqiushuju/toubushuju.js";
 import Bscroll from "@better-scroll/core";
 import gouwuche from "@/components/gouwuche/gouwuche.vue"
 export default {
+  props:{
+      seller:{
+        type:Object
+      }
+    },
   data() {
     return {
       shuju: [],
@@ -244,7 +249,8 @@ export default {
           font-weight: 700;
           font-size: 0.2rem;
           .xianjia {
-            font-size: 0.14em;
+            font-size:.14rem;
+            
             color: rgb(240, 20, 20);
           }
           .yuanjia {
