@@ -19,6 +19,14 @@
 <script>
 export default {
   props:{
+    meigeshangpins:{
+      type:Array,
+      meigeshangpin(){
+        return [
+
+        ];
+      }
+    },
     deliveryPrice:{
       type:Number,
       required:true
@@ -27,6 +35,15 @@ export default {
       type:Number,
       required:true
     }
+  },
+  computed:{
+        zongjia(){
+          let jiage=0;
+          this.meigeshangpins.forEach(item=>{
+            jiage+=item.price*item.count
+          })
+          return jiage;
+        } 
   }
 };
 </script>

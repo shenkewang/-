@@ -43,19 +43,25 @@
         </li>
       </ul>
     </div>
-    <gouwuche v-if="selle.deliveryPrice" :deliveryPrice="selle.deliveryPrice" :minPrice="seller.minPrice"></gouwuche>
+    <gouwuche
+      v-if="seller.deliveryPrice"
+      :deliveryPrice="seller.deliveryPrice"
+      :minPrice="seller.minPrice"
+      :meigeshangpins="meigeshangpins"
+    ></gouwuche>
+    
   </div>
 </template>
 <script>
 import shangpin from "@/qingqiushuju/toubushuju.js";
 import Bscroll from "@better-scroll/core";
-import gouwuche from "@/components/gouwuche/gouwuche.vue"
+import gouwuche from "@/components/gouwuche/gouwuche.vue";
 export default {
-  props:{
-      seller:{
-        type:Object
-      }
-    },
+  props: {
+    seller: {
+      type: Object
+    }
+  },
   data() {
     return {
       shuju: [],
@@ -64,6 +70,15 @@ export default {
     };
   },
   computed: {
+    meigeshangpins(){
+      let shangpins=[];
+      this.shuju.forEach(shu=>{
+        shu.foods.forEach(food=>{
+          foods.push(food);
+        })
+      })
+      return shangpins;
+    },
     currentIndex() {
       //计算index
       for (let i = 0; i < this.listHeight.length; i++) {
@@ -85,43 +100,43 @@ export default {
   methods: {
     initScroll() {
       this.zuoScroll = new Bscroll(this.$refs.zuogundong, {
-        click:true//让click事件生效
+        click: true //让click事件生效
       });
       this.youScroll = new Bscroll(this.$refs.yougundong, {
-        probeType: 3 ,//实时监听scroll,包括触底反弹的动画
-        click:true
+        probeType: 3, //实时监听scroll,包括触底反弹的动画
+        click: true
       });
       //监听滚动事件
       this.youScroll.on("scroll", pos => {
         this.gaodu = Math.abs(pos.y);
-        if(this.gaodu>=this.listHeight[this.listHeight.length-2]){
-            this.zuoScroll.scrollTo(0,-54);
-            console.log(this.listHeight[this.listHeight.length-2])
+        if (this.gaodu >= this.listHeight[this.listHeight.length - 2]) {
+          this.zuoScroll.scrollTo(0, -54);
+          console.log(this.listHeight[this.listHeight.length - 2]);
         }
-        if(this.gaodu<=300){
-          this.zuoScroll.scrollTo(0,0);
+        if (this.gaodu <= 300) {
+          this.zuoScroll.scrollTo(0, 0);
         }
       });
     },
     computedHeight() {
       //统计每一段的高度
       let youItem = this.$refs.youItem;
-       //console.log(youItem);
+      //console.log(youItem);
       let height = 0;
       this.listHeight.push(height);
       youItem.forEach(ietm => {
         height += ietm.clientHeight;
         this.listHeight.push(height);
       });
-       console.log(this.listHeight);
+      console.log(this.listHeight);
     },
-    xuanshangpin(index){
-      let youItems=this.$refs.youItem;
-      let youItem=youItems[index];
-      this.youScroll.scrollToElement(youItem,500);
+    xuanshangpin(index) {
+      let youItems = this.$refs.youItem;
+      let youItem = youItems[index];
+      this.youScroll.scrollToElement(youItem, 500);
     }
   },
-  components:{
+  components: {
     gouwuche
   }
 };
@@ -146,10 +161,10 @@ export default {
         height: 0.54rem;
         background-color: #f3f5f7;
         &.active {
-            background: #fff;
-            .text{
-              font-weight: 700;
-            }
+          background: #fff;
+          .text {
+            font-weight: 700;
+          }
         }
         &:last-child {
           .text {
@@ -249,8 +264,8 @@ export default {
           font-weight: 700;
           font-size: 0.2rem;
           .xianjia {
-            font-size:.14rem;
-            
+            font-size: 0.14rem;
+
             color: rgb(240, 20, 20);
           }
           .yuanjia {
