@@ -43,25 +43,21 @@
         </li>
       </ul>
     </div>
-    <gouwuche
-      v-if="seller.deliveryPrice"
-      :deliveryPrice="seller.deliveryPrice"
-      :minPrice="seller.minPrice"
-      :meigeshangpins="meigeshangpins"
-    ></gouwuche>
-    
+    <Gouwu v-if="seller.deliveryPrice" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></Gouwu>
   </div>
+  
 </template>
 <script>
 import shangpin from "@/qingqiushuju/toubushuju.js";
 import Bscroll from "@better-scroll/core";
-import gouwuche from "@/components/gouwuche/gouwuche.vue";
+import Gouwu from "@/components/gouwuche/gouwuche.vue";
 export default {
-  props: {
-    seller: {
-      type: Object
-    }
-  },
+props:{
+  seller:{
+    type:Object
+  }
+
+},
   data() {
     return {
       shuju: [],
@@ -70,15 +66,7 @@ export default {
     };
   },
   computed: {
-    meigeshangpins(){
-      let shangpins=[];
-      this.shuju.forEach(shu=>{
-        shu.foods.forEach(food=>{
-          foods.push(food);
-        })
-      })
-      return shangpins;
-    },
+    
     currentIndex() {
       //计算index
       for (let i = 0; i < this.listHeight.length; i++) {
@@ -136,8 +124,8 @@ export default {
       this.youScroll.scrollToElement(youItem, 500);
     }
   },
-  components: {
-    gouwuche
+  components:{
+    Gouwu
   }
 };
 </script>

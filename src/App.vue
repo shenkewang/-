@@ -12,7 +12,7 @@
         <router-link to="/shangjia">商家</router-link>
       </div>
     </div>
-    <router-view :seller="seller" />
+    <router-view  :seller="seller"/>
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
   components: {
     Toubu
   }
-};
+};  
 </script>
 <style lang="scss">
 * {
